@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Hey there, pick a month from which to schedule a dinner.</h1>
+<form action="/date-meal" method="post">
+<p>What month?</p>
+<select name="month">
+    <option value=1>Jan.</option>
+    <option value=2>Feb.</option>
+    <option value=3>Mar.</option>
+</select>
+<input type="submit" name="month">
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{{ cal | safe }}
+<form action="/meal-confirm/{{ month }}" method="POST">
+<h2>Pick a date:</h2>
+<!-- TODO limit choices to number of days in specific month -->
+<input type="number" min="1" max="31" step="1" name="date" value="date"/>
+ 
+<h2>Enter a meal:</h2>
+
+    <textarea name="meal" cols="20" rows="2">What's for dinner</textarea>
+<input type="submit" value="ready">
+</form>
+{% endblock %}
