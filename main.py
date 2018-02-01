@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import calendar
-
+from quickstart import push_dinner_to_google, notify_guests
 
 app = Flask(__name__)
 
@@ -28,7 +28,8 @@ def confirmation(month):
     meal = request.form['meal']
     date = request.form['date']
     month_by_name = calendar.month_name[int(month)]
-    # TODO here is where we would create cal object for google calendar api 
+    # TODO here is where we would create cal object for google calendar api, more specific dateTime attrib 
+    push_dinner_to_google(meal, date)
     return render_template('/meal-confirm.html', m=meal, d=date, month=month_by_name)
 
 

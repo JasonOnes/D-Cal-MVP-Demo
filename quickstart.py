@@ -17,10 +17,12 @@ except ImportError:
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/calendar-python-quickstart.json
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+"""
+SCOPES = 'https://www.googleapis.com/auth/calendar'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Google Calendar API Python Quickstart'
-
+GMT_OFF = '-07:00'
+"""
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -73,12 +75,47 @@ def main():
         start = event['start'].get('dateTime', event['start'].get('date'))
         print(start, event['summary'])
 
-def push_dinner_to_google(event):
+def push_dinner_to_google(meal, date):
+    # TODO make dinner object
+    """
+    meal = dinner.food
+    dinner_date = dinner.date
+    """
     # takes dinner and puts it into users google calendar
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('calendar', 'v3', http=http)
+
+    # TODO change credentials to for sufficient permission ie write 
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
+    CLIENT_SECRET_FILE = 'client_secret.json'
+    APPLICATION_NAME = 'DinCal'
+    GMT_OFF = '-07:00'
+    EVENT = {
+        'summary': meal,
+        'start': {'datetime': date },
+        'end': {'dateTime': date } # just psuedo, need to find how to add 1-2 hours to dinner_date start
+    }
+    # add invites with below
+    """ 
+        'attendees': {
+            {'email': 'something@something.com'},
+            {'email': 'somehtingelse@someothermailsite.com}
+    }
+    """
+    
+
+    push_din = service.events().insert(calendarId='primary', sendNotifications=False, body=EVENT).execute()
+    # to send emails (below funct) set sendNotifications=True 
+
+    #to display confirmation
+    print('{} has been added for the night of {}'.format(push_din['summary'], push_din['start']['dateTime']))
     pass
+
 
 def notify_guests():
     # sends emails to guests about date and dinner menu
+    
     pass
 
 
